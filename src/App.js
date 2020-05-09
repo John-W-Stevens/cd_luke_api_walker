@@ -1,24 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import "./bootstrap.css"
 import './App.css';
 
+import FetchSWDataForm from "./components/FetchSWDataForm"
+import DataDisplay from "./components/DataDisplay"
+
 function App() {
+
+  const [data, setData] = useState({})
+  const [error, setError] = useState(false)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container">
+      <FetchSWDataForm data={ data } setData={ setData } error={ error } setError={ setError } />
+      <DataDisplay data={ data } error={ error} />
     </div>
   );
 }

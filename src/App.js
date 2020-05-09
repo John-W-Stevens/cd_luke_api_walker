@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Router } from "@reach/router"
+
 import "./bootstrap.css"
 import './App.css';
 
@@ -13,7 +15,9 @@ function App() {
   return (
     <div className="App container">
       <FetchSWDataForm data={ data } setData={ setData } error={ error } setError={ setError } />
-      <DataDisplay data={ data } error={ error} />
+      <Router>
+        <DataDisplay data={ data } error={ error} path="/:resource/:id/"/>
+      </Router>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef} from "react"
 import axios from "axios"
+import { navigate } from "@reach/router"
 
 const FetchSWDataForm = props => {
     const { data, setData, error, setError } = props
-    const [searchTerm, setSearchTerm] = useState("people")
+    const [resource, setResource] = useState("people")
     const [id, setId] = useState(1)
     const [flag, setFlag] = useState(false)
 
@@ -19,7 +20,7 @@ const FetchSWDataForm = props => {
     // THIS BLOCK PREVENTS useEffect from running on initial page load
 
     useDidMountEffect( ()=>{
-        axios.get(`https://swapi.dev/api/${searchTerm}/${id}`)
+        axios.get(`https://swapi.dev/api/${resource}/${id}`)
         .then(response=>{
             setData(response.data)
             setError(false)
@@ -31,7 +32,7 @@ const FetchSWDataForm = props => {
     }, [flag] )
 
 
-    const onChange = e => {setSearchTerm(e.target.value)}
+    const onChange = e => {setResource(e.target.value)}
     const onChangeId = e => {setId(e.target.value)}
     const onSubmit = e => {
         e.preventDefault()
@@ -39,10 +40,9 @@ const FetchSWDataForm = props => {
         flag?
         setFlag(false):
         setFlag(true);
+        navigate(`/${resource}/${id}/`)
     }
     
-
-
     return(
         <div className="row" style={{marginTop: "20px"}}>
             <div className="col-12 col-md-10 offset-md-1">

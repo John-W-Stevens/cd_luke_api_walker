@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import BenKenobi from "../ben_kenobi.png"
+import axios from "axios"
 
 const DataDisplay = props => {
     const { data, error } = props
 
     const [keys, setKeys] = useState([])
     const [vals, setVals] = useState([])
+
+    const [isPerson, setIsPerson] = useState(false)
+    const [homeWorld, setHomeWorld] = useState("")
 
     // THIS BLOCK PREVENTS useEffect from running on initial page load
     const useDidMountEffect = (func, deps) => {
@@ -22,6 +26,10 @@ const DataDisplay = props => {
         if (error === false){
             let keyArray = []
             let valArray = []
+            if (data.homeworld){
+                setIsPerson(true)
+            }
+            else {setIsPerson(false)}
             for (const [k, v] of Object.entries(data)){
                 keyArray.push(k)
                 valArray.push(v)
@@ -31,10 +39,17 @@ const DataDisplay = props => {
         }
     }, [error, data] )
 
+    useDidMountEffect( ()=>{
+        axios.get(data.homeworld)
+        .then(response=>{
+            let i = keys.indexOf("homeworld")
+            setVals(vals.slice(0,i).concat(response.data.name).concat(vals.slice(i+1,vals.length)))
+        })
+        .catch(err=>{
+            setHomeWorld("")
+        })
+    }, [isPerson] )
 
-
-
-    console.log( keys)
     return(
         <div className="row" style={{marginTop: "20px"}}>
             <div className="col-12 col-md-10 offset-md-1">
